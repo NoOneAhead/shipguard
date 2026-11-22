@@ -7,7 +7,10 @@
 <p align="center">
   <strong>Build with context. Ship with confidence.</strong><br/>
   Built for <strong>Codegeist 2026 (Atlassian)</strong> · Category: <strong>Apps for Software Teams</strong><br/>
-  Stackable Bonus Tracks: <strong>Best Agents (Rovo)</strong> · <strong>Best App with Atlassian MCP</strong> · <strong>Best Apps with Teamwork Graph</strong> · <strong>Best Marketplace Published App</strong>
+  Stackable Bonus Tracks: <strong>Best Agents (Rovo)</strong> · <strong>Best App with Atlassian MCP</strong> · <strong>Best Apps with Teamwork Graph</strong> · <strong>Best Marketplace Published App</strong><br/><br/>
+  <a href="https://youtu.be/sMD5Pfm51PQ"><img src="https://img.shields.io/badge/Demo%20Video-YouTube%201080p%20(4m20s)-ff0000.svg" alt="Demo Video on YouTube" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-0052CC.svg" alt="License: MIT" /></a>
+  <img src="https://img.shields.io/badge/Runs%20on%20Atlassian-Verified%20Eligible-36B37E.svg" alt="Runs on Atlassian Eligible" />
 </p>
 
 ---
