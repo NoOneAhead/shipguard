@@ -27,13 +27,19 @@ modules:
   rovo:agent:
     - key: shipguard-release-agent
       name: ShipGuard Release Guardian
-      description: Evaluates live pre-ship release readiness across Jira dependencies, Confluence runbooks, active incidents, and Teamwork Graph blast radius.
+      description: Evaluates live pre-ship release readiness across Jira dependencies,
+        Confluence runbooks, active incidents, and Teamwork Graph blast radius.
       prompt: >
-        You are ShipGuard Release Guardian, a rigorous pre-ship engineering advisor embedded in Atlassian.
-        Before recommending that any change be merged or deployed, always retrieve live evidence using your ShipGuard tools rather than guessing.
-        Lead every response with the exact Verdict (GO, CAUTION, or BLOCK), Readiness Score (0-100), Blast-Radius Tier, and any Hard Block Gates.
-        Highlight active SEV-1/SEV-2 incident collisions, unresolved Jira blockers, stale or rollback-missing Confluence runbooks, and Teamwork Graph impacted services.
-        Never record a governance override or approval without explicit human confirmation and an audit justification.
+        You are ShipGuard Release Guardian, a rigorous pre-ship engineering
+        advisor embedded in Atlassian. Before recommending that any change be
+        merged or deployed, always retrieve live evidence using your ShipGuard
+        tools rather than guessing. Lead every response with the exact Verdict
+        (GO, CAUTION, or BLOCK), Readiness Score (0-100), Blast-Radius Tier, and
+        any Hard Block Gates. Highlight active SEV-1/SEV-2 incident collisions,
+        unresolved Jira blockers, stale or rollback-missing Confluence runbooks,
+        and Teamwork Graph impacted services. Never record a governance override
+        or approval without explicit human confirmation and an audit
+        justification.
       conversationStarters:
         - Is PAY-412 safe to ship right now?
         - Check active incident collisions for PAY-412
@@ -75,7 +81,9 @@ modules:
       name: Evaluate Ship Readiness
       function: act-eval-readiness
       actionVerb: GET
-      description: Compute a live 0-100 pre-ship readiness score, Go/Caution/Block verdict, blast-radius graph, incident collisions, and runbook audit for a Jira issue.
+      description: Compute a live 0-100 pre-ship readiness score, Go/Caution/Block
+        verdict, blast-radius graph, incident collisions, and runbook audit for
+        a Jira issue.
       inputs:
         issueKey:
           title: Jira Issue Key
@@ -87,7 +95,8 @@ modules:
       name: Check Incident Collisions
       function: act-check-incidents
       actionVerb: GET
-      description: Detect active SEV-1 and SEV-2 incidents colliding with a Jira issue's components, labels, or Teamwork Graph impacted services.
+      description: Detect active SEV-1 and SEV-2 incidents colliding with a Jira
+        issue's components, labels, or Teamwork Graph impacted services.
       inputs:
         issueKey:
           title: Jira Issue Key
@@ -99,7 +108,9 @@ modules:
       name: Audit Runbook Freshness
       function: act-audit-runbook
       actionVerb: GET
-      description: Audit a Confluence release runbook or ADR for freshness SLA compliance and required operational sections (rollback, monitoring, health checks, escalation).
+      description: Audit a Confluence release runbook or ADR for freshness SLA
+        compliance and required operational sections (rollback, monitoring,
+        health checks, escalation).
       inputs:
         pageId:
           title: Confluence Page ID
@@ -110,13 +121,16 @@ modules:
           title: Jira Issue Key
           type: string
           required: false
-          description: Optional Jira issue key whose linked Confluence runbooks should be audited.
+          description: Optional Jira issue key whose linked Confluence runbooks should be
+            audited.
 
     - key: record-ship-decision
       name: Record Ship Decision
       function: act-record-decision
       actionVerb: CREATE
-      description: Record a human-confirmed governance decision (APPROVED, OVERRIDDEN, or HELD) with audit justification in Forge KVS and post an audit note on Jira.
+      description: Record a human-confirmed governance decision (APPROVED, OVERRIDDEN,
+        or HELD) with audit justification in Forge KVS and post an audit note on
+        Jira.
       inputs:
         issueKey:
           title: Jira Issue Key
@@ -132,7 +146,8 @@ modules:
           title: Audit Justification
           type: string
           required: true
-          description: Explicit human-provided rationale explaining why the release is approved, overridden, or held.
+          description: Explicit human-provided rationale explaining why the release is
+            approved, overridden, or held.
         actorName:
           title: Actor Name
           type: string
@@ -143,7 +158,9 @@ modules:
       name: Get Project Release Risk
       function: act-project-risk
       actionVerb: GET
-      description: Evaluate and rank all active release candidate issues in a Jira project by pre-ship readiness risk, incident collisions, and runbook health.
+      description: Evaluate and rank all active release candidate issues in a Jira
+        project by pre-ship readiness risk, incident collisions, and runbook
+        health.
       inputs:
         projectKey:
           title: Jira Project Key
@@ -195,6 +212,6 @@ permissions:
     - read:graph:service:external
 
 app:
-  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
+  id: ari:cloud:ecosystem::app/01899401-fc12-4267-857d-b832a0df6a3c
   runtime:
     name: nodejs24.x
