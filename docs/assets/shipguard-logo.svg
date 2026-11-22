@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="ShipGuard Release Guardian Logo">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#091E42" />
+      <stop offset="55%" stop-color="#0747A6" />
+      <stop offset="100%" stop-color="#403294" />
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2684FF" />
+      <stop offset="100%" stop-color="#6554C0" />
+    </linearGradient>
+    <linearGradient id="arcGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#36B37E" />
+      <stop offset="100%" stop-color="#79F2C0" />
+    </linearGradient>
+    <filter id="softShadow" x="-12%" y="-12%" width="124%" height="124%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#040D21" flood-opacity="0.38" />
+    </filter>
+  </defs>
+
+  <!-- Rounded app icon canvas -->
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="url(#bgGrad)" />
+
+  <!-- Subtle radar rings -->
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="3" />
+  <circle cx="256" cy="256" r="144" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="2" stroke-dasharray="10 10" />
+
+  <!-- Cross-product blast-radius constellation nodes -->
+  <g stroke="#B3D4FF" stroke-opacity="0.48" stroke-width="3">
+    <line x1="256" y1="256" x2="114" y2="132" />
+    <line x1="256" y1="256" x2="398" y2="132" />
+    <line x1="256" y1="256" x2="104" y2="334" />
+    <line x1="256" y1="256" x2="408" y2="334" />
+  </g>
+  <circle cx="114" cy="132" r="14" fill="#2684FF" stroke="#FFFFFF" stroke-width="4" />
+  <circle cx="398" cy="132" r="14" fill="#00B8D9" stroke="#FFFFFF" stroke-width="4" />
+  <circle cx="104" cy="334" r="14" fill="#FFAB00" stroke="#FFFFFF" stroke-width="4" />
+  <circle cx="408" cy="334" r="14" fill="#36B37E" stroke="#FFFFFF" stroke-width="4" />
+
+  <!-- Central guardian shield -->
+  <path
+    d="M256 96 L372 142 V246 C372 325 322 384 256 416 C190 384 140 325 140 246 V142 Z"
+    fill="url(#shieldGrad)"
+    stroke="#FFFFFF"
+    stroke-width="10"
+    stroke-linejoin="round"
+    filter="url(#softShadow)"
+  />
+
+  <!-- Inner navy shield plate -->
+  <path
+    d="M256 122 L348 159 V244 C348 308 308 358 256 386 C204 358 164 308 164 244 V159 Z"
+    fill="#091E42"
+    fill-opacity="0.88"
+  />
+
+  <!-- Readiness arc inside shield -->
+  <path
+    d="M196 266 A64 64 0 1 1 316 266"
+    fill="none"
+    stroke="#253858"
+    stroke-width="14"
+    stroke-linecap="round"
+  />
+  <path
+    d="M196 266 A64 64 0 1 1 311 232"
+    fill="none"
+    stroke="url(#arcGrad)"
+    stroke-width="14"
+    stroke-linecap="round"
+  />
+
+  <!-- Bold verified ship checkmark -->
+  <path
+    d="M224 254 L248 278 L296 226"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="16"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Bottom readiness pill indicator -->
+  <rect x="210" y="316" width="92" height="22" rx="11" fill="#00875A" />
+  <circle cx="228" cy="327" r="5" fill="#ABF5D1" />
+  <rect x="240" y="323" width="48" height="8" rx="4" fill="#E3FCEF" />
+</svg>

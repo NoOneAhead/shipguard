@@ -1,0 +1,9 @@
+node_modules/
+static/shipguard-ui/node_modules/
+static/shipguard-ui/dist/
+.forge/
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db

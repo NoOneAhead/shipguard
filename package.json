@@ -1,0 +1,30 @@
+{
+  "name": "shipguard-codegeist-2026",
+  "version": "1.0.0",
+  "description": "ShipGuard — Pre-Ship Context Intelligence, Blast-Radius Guardian & MCP/Rovo Bridge for Atlassian Forge (Codegeist 2026)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:ui": "npm --prefix static/shipguard-ui run build",
+    "build:check": "tsc --noEmit",
+    "build": "npm run build:check && npm run build:ui",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint:manifest": "node scripts/validate-manifest.mjs",
+    "forge:lint": "forge lint",
+    "preview": "tsx preview/server.ts"
+  },
+  "dependencies": {
+    "@forge/api": "^8.5.0",
+    "@forge/kvs": "^2.1.2",
+    "@forge/resolver": "^2.0.2"
+  },
+  "devDependencies": {
+    "@forge/cli": "^15.1.0",
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.2",
+    "yaml": "^2.7.1"
+  }
+}

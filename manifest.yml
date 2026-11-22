@@ -1,0 +1,200 @@
+modules:
+  jira:issuePanel:
+    - key: shipguard-issue-panel
+      resource: shipguard-ui
+      resolver:
+        function: sg-resolver
+      viewportSize: large
+      title: ShipGuard Readiness
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+
+  jira:projectPage:
+    - key: shipguard-release-center
+      resource: shipguard-ui
+      resolver:
+        function: sg-resolver
+      title: ShipGuard Release Center
+      layout: basic
+
+  confluence:contentAction:
+    - key: shipguard-runbook-verifier
+      resource: shipguard-ui
+      resolver:
+        function: sg-resolver
+      title: Verify Runbook with ShipGuard
+      viewportSize: large
+
+  rovo:agent:
+    - key: shipguard-release-agent
+      name: ShipGuard Release Guardian
+      description: Evaluates live pre-ship release readiness across Jira dependencies, Confluence runbooks, active incidents, and Teamwork Graph blast radius.
+      prompt: >
+        You are ShipGuard Release Guardian, a rigorous pre-ship engineering advisor embedded in Atlassian.
+        Before recommending that any change be merged or deployed, always retrieve live evidence using your ShipGuard tools rather than guessing.
+        Lead every response with the exact Verdict (GO, CAUTION, or BLOCK), Readiness Score (0-100), Blast-Radius Tier, and any Hard Block Gates.
+        Highlight active SEV-1/SEV-2 incident collisions, unresolved Jira blockers, stale or rollback-missing Confluence runbooks, and Teamwork Graph impacted services.
+        Never record a governance override or approval without explicit human confirmation and an audit justification.
+      conversationStarters:
+        - Is PAY-412 safe to ship right now?
+        - Check active incident collisions for PAY-412
+        - Audit the Confluence runbook for PAY-412
+        - Rank release risks across project PAY
+      actions:
+        - evaluate-ship-readiness
+        - check-incident-collisions
+        - audit-runbook-freshness
+        - record-ship-decision
+        - get-project-release-risk
+      skills:
+        - shipguard-release-skill
+
+  rovo:skill:
+    - key: shipguard-release-skill
+      source:
+        dir: skills/shipguard-release-check
+      dependencies:
+        tools:
+          - evaluate-ship-readiness
+          - check-incident-collisions
+          - audit-runbook-freshness
+          - record-ship-decision
+          - get-project-release-risk
+
+  rovo:mcp:
+    - key: shipguard-mcp-server
+      name: ShipGuard MCP Server
+      tools:
+        - evaluate-ship-readiness
+        - check-incident-collisions
+        - audit-runbook-freshness
+        - record-ship-decision
+        - get-project-release-risk
+
+  action:
+    - key: evaluate-ship-readiness
+      name: Evaluate Ship Readiness
+      function: act-eval-readiness
+      actionVerb: GET
+      description: Compute a live 0-100 pre-ship readiness score, Go/Caution/Block verdict, blast-radius graph, incident collisions, and runbook audit for a Jira issue.
+      inputs:
+        issueKey:
+          title: Jira Issue Key
+          type: string
+          required: true
+          description: Jira issue key to evaluate, such as PAY-412.
+
+    - key: check-incident-collisions
+      name: Check Incident Collisions
+      function: act-check-incidents
+      actionVerb: GET
+      description: Detect active SEV-1 and SEV-2 incidents colliding with a Jira issue's components, labels, or Teamwork Graph impacted services.
+      inputs:
+        issueKey:
+          title: Jira Issue Key
+          type: string
+          required: true
+          description: Jira issue key to check against active incidents, such as PAY-412.
+
+    - key: audit-runbook-freshness
+      name: Audit Runbook Freshness
+      function: act-audit-runbook
+      actionVerb: GET
+      description: Audit a Confluence release runbook or ADR for freshness SLA compliance and required operational sections (rollback, monitoring, health checks, escalation).
+      inputs:
+        pageId:
+          title: Confluence Page ID
+          type: string
+          required: false
+          description: Optional Confluence page ID to audit directly.
+        issueKey:
+          title: Jira Issue Key
+          type: string
+          required: false
+          description: Optional Jira issue key whose linked Confluence runbooks should be audited.
+
+    - key: record-ship-decision
+      name: Record Ship Decision
+      function: act-record-decision
+      actionVerb: CREATE
+      description: Record a human-confirmed governance decision (APPROVED, OVERRIDDEN, or HELD) with audit justification in Forge KVS and post an audit note on Jira.
+      inputs:
+        issueKey:
+          title: Jira Issue Key
+          type: string
+          required: true
+          description: Jira issue key for the governance decision.
+        decision:
+          title: Decision
+          type: string
+          required: true
+          description: Governance decision value — APPROVED, OVERRIDDEN, or HELD.
+        justification:
+          title: Audit Justification
+          type: string
+          required: true
+          description: Explicit human-provided rationale explaining why the release is approved, overridden, or held.
+        actorName:
+          title: Actor Name
+          type: string
+          required: false
+          description: Name of the engineer or release manager recording this decision.
+
+    - key: get-project-release-risk
+      name: Get Project Release Risk
+      function: act-project-risk
+      actionVerb: GET
+      description: Evaluate and rank all active release candidate issues in a Jira project by pre-ship readiness risk, incident collisions, and runbook health.
+      inputs:
+        projectKey:
+          title: Jira Project Key
+          type: string
+          required: true
+          description: Jira project key to scan, such as PAY.
+
+  trigger:
+    - key: shipguard-issue-drift-trigger
+      function: trig-issue-updated
+      events:
+        - avi:jira:updated:issue
+
+  function:
+    - key: sg-resolver
+      handler: index.resolverHandler
+    - key: act-eval-readiness
+      handler: index.evaluateShipReadinessAction
+    - key: act-check-incidents
+      handler: index.checkIncidentCollisionsAction
+    - key: act-audit-runbook
+      handler: index.auditRunbookFreshnessAction
+    - key: act-record-decision
+      handler: index.recordShipDecisionAction
+    - key: act-project-risk
+      handler: index.getProjectReleaseRiskAction
+    - key: trig-issue-updated
+      handler: index.onJiraIssueUpdated
+
+resources:
+  - key: shipguard-ui
+    path: static/shipguard-ui/dist
+
+permissions:
+  scopes:
+    - storage:app
+    - read:jira-work
+    - write:jira-work
+    - read:jira-user
+    - read:page:confluence
+    - write:page:confluence
+    - read:space:confluence
+    - search:confluence
+    - read:graph:issue:jira
+    - read:graph:page:confluence
+    - read:graph:user:atlassian
+    - read:graph:team:atlassian
+    - read:graph:pull-request:external
+    - read:graph:service:external
+
+app:
+  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
+  runtime:
+    name: nodejs24.x
